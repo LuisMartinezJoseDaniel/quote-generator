@@ -9,13 +9,12 @@ const loader = document.querySelector("#loader");
 
 let apiQuotes = [];
 
-//Show Loading
-const loading = () => { 
+const showLoadingSpinner = () => { 
   loader.hidden = false;//Ocultar el loader
   quoteContainer.hidden = true;// Ver solo el contenido del container
 }
-// Hide Loading
-const complete = () => { 
+
+const removeLoadingSpinner = () => { 
   quoteContainer.hidden = false;
   loader.hidden = true;
 }
@@ -23,7 +22,7 @@ const complete = () => {
 
 //Show new Quote
 const newQuote = () => {
-  loading();//First time to refresh the page
+  showLoadingSpinner();//First time to refresh the page
   const quote = apiQuotes[Math.floor(Math.random() * apiQuotes.length)];
   
   //If Author is not blank
@@ -36,11 +35,11 @@ const newQuote = () => {
   }
   //Set Quote, Hide Loader
   quoteText.textContent = quote.text;
-  complete();
+  removeLoadingSpinner();
 };
 //Get Quotes
 const getQuoutes = async () => {
-  loading();
+  showLoadingSpinner();
   const apiURL = "https://type.fit/api/quotes";
 
   try {
@@ -48,7 +47,9 @@ const getQuoutes = async () => {
     apiQuotes = await response.json();
     newQuote();
   } catch (err) {
-    throw err;
+    alert('No se ha podido cargar la pagina ');
+    throw Error(err);
+    
   }
 };
 
